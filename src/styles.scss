@@ -209,6 +209,7 @@ input[type=submit], input[type=reset], button[type=submit] {
     text-align: center;
     font-family: arial;
     float: left;
+    height: 500px;
 }
 
 .card:hover {
@@ -217,6 +218,7 @@ input[type=submit], input[type=reset], button[type=submit] {
 
 .card-body {
   padding: 5px 5px;
+  height: 190px;
 }
 
  .card img{
@@ -226,9 +228,10 @@ input[type=submit], input[type=reset], button[type=submit] {
 }
 
 .card-footer{
-    /* display: flex;
-    justify-content:center; */
-    padding: 1px;
+    display: flex;
+    justify-content:center;
+    display: table;
+    padding: 5px;
     width: auto;
     font-size: 18px;
     border-radius: 0 0 5px 5px;
@@ -325,13 +328,16 @@ input[type=submit], input[type=reset], button[type=submit] {
 }
 
 .popup-content p.description{
-    font-family: Roboto;
+    font-family: Arial, Helvetica, sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     line-height: 21px;
     color: #000;
-    padding: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 5px;
 }
 
 .popup-content .popup-footer{

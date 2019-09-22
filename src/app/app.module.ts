@@ -13,7 +13,9 @@ import { AdzHeaderComponent } from './components/adz-header/adz-header.component
 
 const appRoutes: Routes = [
   { path: 'home', component: AdzHomeComponent },
-  { path: 'result', component: AdzResultComponent },
+  { path: 'result/:s', component: AdzResultComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({

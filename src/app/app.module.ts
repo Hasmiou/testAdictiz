@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { AdzResultComponent } from './components/adz-result/adz-result.component';
 import { AdzHeaderComponent } from './components/adz-header/adz-header.component';
+import { FilterPipe } from './pipes/filter.pipe';
 
 const appRoutes: Routes = [
   { path: 'home', component: AdzHomeComponent },
@@ -24,6 +25,7 @@ const appRoutes: Routes = [
     AdzHomeComponent,
     AdzResultComponent,
     AdzHeaderComponent,
+    FilterPipe,
   ],
   imports: [
     BrowserModule,

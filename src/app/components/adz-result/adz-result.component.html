@@ -4,22 +4,23 @@
             Retour à la liste
         </button>
         <div class="item">
-            <form name="" action="#" method="GET">
-                <input type="text" name="filter" placeholder="Filtrer">
-                <select>
-                    <option>Par Catégorie</option>
-                    <option>Par Auteur</option>
-                    <option>Par Année de sortie</option>
-                    <option>Par Editeur</option>
-                </select>
-            </form>
+            <!--<form name="" action="#" method="GET">-->
+            <input type="text" name="searchfilter" [(ngModel)]="searchfilter" placeholder="Filtrer">
+            <select name="by" [(ngModel)]="by">
+                <option value="title" selected>Par Titre</option>
+                <option value="categories" selected>Par Catégorie</option>
+                <option value="authors">Par Auteur</option>
+                <option value="publishedDate">Par Année de sortie</option>
+                <option value="publisher">Par Editeur</option>
+            </select>
+            <!--</form>-->
         </div>
     </div>
     <p class="badge-label">Recherche: <b>{{query.request|uppercase}}</b> -
         {{(query.totalItems)?query.totalItems:"aucun"}}
         éléments trouvés</p>
 
-    <div class="card" *ngFor="let book of books ; let i = index">
+    <div class="card" *ngFor="let book of books|filter:searchfilter:by; let i = index">
         <img src="{{book.imageLink}}" alt="book">
         <div class="card-body">
             <b>{{(book.title.length>30)?(book.title|slice:0:30)+'...':book.title}}</b><br>

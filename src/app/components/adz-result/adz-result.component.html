@@ -1,0 +1,80 @@
+<div class="content">
+    <div class="top-bar">
+        <button type="button" class="btn btn-primary" (onclick)="onGoBack()">
+            Retour à la liste
+        </button>
+        <div class="item">
+            <form name="" action="#" method="GET">
+                <input type="text" name="filter" placeholder="Filtrer">
+                <select>
+                    <option>Par Catégorie</option>
+                    <option>Par Auteur</option>
+                    <option>Par Année de sortie</option>
+                    <option>Par Editeur</option>
+                </select>
+            </form>
+        </div>
+    </div>
+    <p class="badge-label">Recherche: <b>{{query.request|uppercase}}</b> -
+        {{(query.totalItems)?query.totalItems:"aucun"}}
+        éléments trouvés</p>
+
+    <div class="card" *ngFor="let book of books ; let i = index">
+        <img src="{{book.imageLink}}" alt="book">
+        <div class="card-bodyr">
+            <h4><b>{{book.title}}</b></h4>
+            <div *ngIf="book.authors; else elseAuthor">
+                <div>Auteurs:
+                    <div *ngFor="let a of book.authors;"><span class="">{{a}}</span> </div>
+                </div>
+            </div>
+            <ng-template #elseAuthor>
+                <h5>Auteurs: inconus</h5>
+            </ng-template>
+
+            <div *ngIf="book.price > 0; else elsePrice">
+                <h4><b>{{book.price}} {{book.currency}}</b></h4>
+            </div>
+            <ng-template #elsePrice>
+                <h5>Prix: inconnu</h5>
+            </ng-template>
+
+            <div class="small">
+                <b>Catégorie:</b>
+                <div *ngIf="book.categories; else elseCat">
+                    <div *ngFor="let c of book.categories;">
+                        {{c}}
+                    </div>
+                </div>
+                <ng-template #elseCat>
+                    <h5>inconnu</h5>
+                </ng-template>
+            </div>
+
+            <span class="badge">Langue: {{book.language}}</span>
+            <span class="badge">Publié: {{book.publishedDate|date: 'yyyy'}}</span>
+            <span class="badge">eBook: {{book.isEbook?'Yes':'No'}}</span>
+
+        </div>
+        <div class="card-footer">
+            <div class="popup">
+                <button type="button" class="btn btn-primary" (click)="openPopup(i)">Plus de détails</button>
+                <div class="popup-warp" id="popup{{i}}">
+                    <div class="popup-content">
+                        <p class="description">
+                            <b>Description</b>
+                            {{(book.description|slice:0:1000)+'...'}}
+                        </p>
+
+                        <div class="popup-footer">
+                            <a href="{{book.link}}" target="_blank" class="badge-colored">go to Google Book</a>
+                            <span class="badge">{{book.pageCount}} pages</span>
+                            <span class="badge">Publié par: {{book.publisher}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

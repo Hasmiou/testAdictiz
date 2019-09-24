@@ -33,14 +33,19 @@ export class AdzBooksService {
           this.emitBooks();
         },
         (error) => {
-          console.log('Error: ' + error);
+          this.query = null;
+          this.books = null;
+          this.emitBooks();
+          /**
+           * TODO: Notify badConnexion
+           */
         }
       );
   }
 
   responseParser(response: any, req: string) {
     this.query.request = req;
-    //this.query.totalItems = response.items.length;
+    this.query.totalItems = response.items.length;
     const items: any[] = response.items;
     items.map(
       i => {

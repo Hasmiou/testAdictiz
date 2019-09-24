@@ -7,18 +7,26 @@
             <input type="text" name="searchfilter" [(ngModel)]="searchfilter" placeholder="Filtrer">
             <select name="by" [(ngModel)]="by">
                 <option value="title" selected>Par Titre</option>
-                <option value="categories" selected>Par Catégorie</option>
-                <option value="authors">Par Auteur</option>
-                <option value="publishedDate">Par Année de sortie</option>
+                <!-- <option value="categories" selected>Par Catégorie</option> -->
+                <!--  <option value="authors">Par Auteur</option> -->
+                <option value="publishedYear">Par Année de sortie</option>
                 <option value="publisher">Par Editeur</option>
+                <option value="country">Par Pays</option>
+                <option value="language">Par Langue</option>
+                <option value="pageslessthan">Moins de ... Pages</option>
+                <option value="pagesmorethan">Plus de ... Pages</option>
+                <option value="pricelessthan">Par prix <= ...</option> <option value="pricemorethan">Par prix >= ...
+                </option>
+
             </select>
         </div>
     </div>
-    <p class="badge-label">Recherche: <b>{{query.request|uppercase}}</b> -
+    <p *ngIf="query !null" class="badge-label">Recherche: <b>{{query.request|uppercase}}</b> -
         {{(query.totalItems)?query.totalItems:"aucun"}}
-        éléments trouvés</p>
-    <div class="" *ngIf="query.totalItems else elseContent">
-        <div class="card" *ngFor="let book of books|filter:searchfilter:by; let i = index">
+        éléments trouvés </p>
+    <div class="" *ngIf="query && query.totalItems else elseContent">
+        <div class="card" *ngFor="let book of books|filter:searchfilter:by; let i = index">
+
             <img src="{{book.imageLink}}" alt="book" (click)="openDialog(book)">
             <div class="card-body">
                 <b>{{(book.title.length>30)?(book.title|slice:0:30)+'...':book.title}}</b><br>
@@ -83,7 +91,9 @@
             </div>
         </div>
     </div>
+
     <ng-template #elseContent>
+        <h3 class="mat-display-1">Aucun élément trouvé</h3>
         <bullet-list-content-loader></bullet-list-content-loader>
     </ng-template>
 </div>

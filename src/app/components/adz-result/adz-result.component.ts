@@ -14,7 +14,6 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./adz-result.component.scss']
 })
 export class AdzResultComponent implements OnInit {
-
   constructor(
     private booksService: AdzBooksService,
     private router: Router,
@@ -46,6 +45,7 @@ export class AdzResultComponent implements OnInit {
     this.parseUrl();
     this.booksService.getBooks(this.requestString);
     this.booksService.emitBooks();
+    if (!this.query || !this.books) this.notify("Erreur de connexion nous ne parvenons pas à traiter votre demande. :(");
   }
 
   onGoBack() {

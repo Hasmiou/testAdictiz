@@ -1,10 +1,13 @@
 <div class="content t50">
     <div class="search-warper">
-        <h1 class="title">Rechercher un livre</h1>
+        <h1 class="mat-display-1 title">Rechercher un livre</h1>
         <form (keyup.enter)="onSubmit(f)" #f="ngForm">
             <div class="form-content">
-                <input type="text" name="search" id="search" class="input-text" placeholder="mot clé..." autofocus
-                    ngModel required>
+                <mat-form-field class="mat-input-text">
+                    <mat-icon matSuffix>search</mat-icon>
+                    <input matInput type="text" value="" name="search" id="search" placeholder="mot clé... puis ENTRER"
+                        ngModel required>
+                </mat-form-field>
             </div>
         </form>
     </div>

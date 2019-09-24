@@ -40,7 +40,7 @@ export class AdzBooksService {
 
   responseParser(response: any, req: string) {
     this.query.request = req;
-    this.query.totalItems = response.items.length;
+    //this.query.totalItems = response.items.length;
     const items: any[] = response.items;
     items.map(
       i => {

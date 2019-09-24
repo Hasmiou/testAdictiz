@@ -18,8 +18,10 @@ import { MatDialogModule, MatCardModule } from '@angular/material';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatListModule } from '@angular/material/list';
-import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
+import { ContentLoaderModule } from '@ngneat/content-loader';
 
 const appRoutes: Routes = [
   { path: 'home', component: AdzHomeComponent },
@@ -51,8 +53,9 @@ const appRoutes: Routes = [
     MatCardModule,
     MatIconModule,
     MatDividerModule,
-    MatListModule,
-    MatTableModule
+    MatInputModule,
+    MatSnackBarModule,
+    ContentLoaderModule
   ],
   providers: [
     AdzBooksService,

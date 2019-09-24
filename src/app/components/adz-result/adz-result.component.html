@@ -4,7 +4,6 @@
             <mat-icon aria-hidden="false" aria-label="backToList">more</mat-icon> Retour
         </button>
         <div class="item">
-            <!--<form name="" action="#" method="GET">-->
             <input type="text" name="searchfilter" [(ngModel)]="searchfilter" placeholder="Filtrer">
             <select name="by" [(ngModel)]="by">
                 <option value="title" selected>Par Titre</option>
@@ -13,76 +12,78 @@
                 <option value="publishedDate">Par Année de sortie</option>
                 <option value="publisher">Par Editeur</option>
             </select>
-            <!--</form>-->
         </div>
     </div>
     <p class="badge-label">Recherche: <b>{{query.request|uppercase}}</b> -
         {{(query.totalItems)?query.totalItems:"aucun"}}
         éléments trouvés</p>
-
-    <div class="card" *ngFor="let book of books|filter:searchfilter:by; let i = index">
-        <img src="{{book.imageLink}}" alt="book">
-        <div class="card-body">
-            <b>{{(book.title.length>30)?(book.title|slice:0:30)+'...':book.title}}</b><br>
-            <div *ngIf="book.authors; else elseAuthor">
-                <div class="small"><b>Auteurs</b>:
-                    <div *ngFor="let a of book.authors; let i = index;"><span *ngIf="i <3" class="small">{{a}}</span>
-                    </div><br>
-                </div>
-            </div>
-            <ng-template #elseAuthor>
-                <span class="small">Auteurs: inconus</span><br>
-            </ng-template>
-
-            <div *ngIf="book.price > 0; else elsePrice">
-                <h4 class="small"><b>{{book.price}} {{book.currency}}</b></h4><br>
-            </div>
-            <ng-template #elsePrice>
-                <span>Prix: inconnu</span>
-            </ng-template>
-
-            <div class="small">
-
-                <b>Catégorie:</b>
-                <div *ngIf="book.categories; else elseCat">
-                    <div *ngFor="let c of book.categories;">
-                        {{c}}
+    <div class="" *ngIf="query.totalItems else elseContent">
+        <div class="card" *ngFor="let book of books|filter:searchfilter:by; let i = index">
+            <img src="{{book.imageLink}}" alt="book" (click)="openDialog(book)">
+            <div class="card-body">
+                <b>{{(book.title.length>30)?(book.title|slice:0:30)+'...':book.title}}</b><br>
+                <div *ngIf="book.authors; else elseAuthor">
+                    <div class="small"><b>Auteurs</b>:
+                        <div *ngFor="let a of book.authors; let i = index;"><span *ngIf="i <3"
+                                class="small">{{a}}</span>
+                        </div><br>
                     </div>
                 </div>
-                <ng-template #elseCat>
-                    <h5>Catégotie: inconnu</h5>
+                <ng-template #elseAuthor>
+                    <span class="small">Auteurs: inconus</span><br>
                 </ng-template>
-            </div>
 
-            <span class="badge">Langue: {{book.language}}</span>
-            <span class="badge">Publié: {{book.publishedDate|date: 'yyyy'}}</span>
-            <!--<span class="badge">eBook: {{book.isEbook?'Yes':'No'}}</span>-->
+                <div *ngIf="book.price > 0; else elsePrice">
+                    <h4 class="small"><b>{{book.price}} {{book.currency}}</b></h4><br>
+                </div>
+                <ng-template #elsePrice>
+                    <span>Prix: inconnu</span>
+                </ng-template>
 
-        </div>
-        <div class="card-footer">
-            <button mat-raised-button color="primary" (click)="openDialog(book)">
-                <mat-icon aria-hidden="false" aria-label="backToList">description</mat-icon> Voire les détails
-            </button>
-            <!--<div class="popup">
-                <button type="button" class="btn btn-primary" (click)="openPopup(i)">+Détails</button>
-                <div class="popup-warp" id="popup{{i}}">
-                    <div class="popup-content">
-                        <p class="description">
-                            <b>{{book.title}}</b><br>
-                            <b>Description</b>
-                            {{(book.description|slice:0:1000)+'...'}}
-                        </p>
+                <div class="small">
 
-                        <div class="popup-footer">
-                            <a href="{{book.link}}" target="_blank" class="badge-colored">go to Google Book</a>
-                            <span class="badge">{{book.pageCount}} pages</span>
-                            <span class="badge">Publié par: {{book.publisher}}</span>
+                    <b>Catégorie:</b>
+                    <div *ngIf="book.categories; else elseCat">
+                        <div *ngFor="let c of book.categories;">
+                            {{c}}
                         </div>
                     </div>
+                    <ng-template #elseCat>
+                        <h5>Catégotie: inconnu</h5>
+                    </ng-template>
                 </div>
-            
-            </div>-->
+
+                <span class="badge">Langue: {{book.language}}</span>
+                <span class="badge">Publié: {{book.publishedDate|date: 'yyyy'}}</span>
+
+            </div>
+            <div class="card-footer">
+                <button mat-raised-button color="primary" (click)="openDialog(book)">
+                    <mat-icon aria-hidden="false" aria-label="backToList">description</mat-icon> Voire les détails
+                </button>
+                <!--<div class="popup">
+                        <button type="button" class="btn btn-primary" (click)="openPopup(i)">+Détails</button>
+                        <div class="popup-warp" id="popup{{i}}">
+                            <div class="popup-content">
+                                <p class="description">
+                                    <b>{{book.title}}</b><br>
+                                    <b>Description</b>
+                                    {{(book.description|slice:0:1000)+'...'}}
+                                </p>
+
+                                <div class="popup-footer">
+                                    <a href="{{book.link}}" target="_blank" class="badge-colored">go to Google Book</a>
+                                    <span class="badge">{{book.pageCount}} pages</span>
+                                    <span class="badge">Publié par: {{book.publisher}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </div>-->
+            </div>
         </div>
     </div>
-
+    <ng-template #elseContent>
+        <bullet-list-content-loader></bullet-list-content-loader>
+    </ng-template>
 </div>

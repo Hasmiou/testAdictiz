@@ -5,6 +5,7 @@ import AdzQuery from 'src/app/models/Query.model';
 import { Subscription } from 'rxjs';
 import AdzBook from 'src/app/models/Book.model';
 import { MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material';
 
 
 @Component({
@@ -18,7 +19,9 @@ export class AdzResultComponent implements OnInit {
     private booksService: AdzBooksService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    public dialog: MatDialog) { }
+    public _dialog: MatDialog,
+    private _snackBar: MatSnackBar
+  ) { }
 
   requestString: string = 'lion';
 
@@ -53,19 +56,13 @@ export class AdzResultComponent implements OnInit {
     let search = this.activatedRoute.snapshot.params['s'];
     if (search === "") {
       this.router.navigate(['/home'])
-      /**
-       * TODO: Notify
-       */
     }
 
     try {
       search = decodeURI(search);
       this.requestString = search;
     } catch (error) {
-      console.log(error);
-      /**
-       * TODO: Notify
-       */
+      this.notify("Error: une erreur s'est produite: " + error);
     }
   }
 
@@ -83,11 +80,17 @@ export class AdzResultComponent implements OnInit {
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = book;
-    const dialogRef = this.dialog.open(DialogContentComponent, dialogConfig);
+    const dialogRef = this._dialog.open(DialogContentComponent, dialogConfig);
 
 
     dialogRef.afterClosed().subscribe((result: any) => {
       console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  notify(message: string) {
+    this._snackBar.open(message, 'X', {
+      duration: 5000
     });
   }
 }
@@ -98,6 +101,6 @@ export class AdzResultComponent implements OnInit {
 })
 export class DialogContentComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-    console.log(data);
+    //console.log(data);
   }
 }

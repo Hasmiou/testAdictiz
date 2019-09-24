@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 /**************************************************************/
 body{
     position: relative;
@@ -450,4 +450,15 @@ input[type=submit], input[type=reset], button[type=submit] {
   }
 }
 
+.mat-dialog-content {
+    //max-height: inherit !important;
+    min-height: 350px;
+    min-width: 550px;
+    overflow: scroll;
+}
+
+table th{
+  margin-right: 10px;
+  text-align: left;
+}
 

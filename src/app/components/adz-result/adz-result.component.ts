@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Inject } from '@angular/core';
 import { AdzBooksService } from 'src/app/services/adz-books.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import AdzQuery from 'src/app/models/Query.model';
 import { Subscription } from 'rxjs';
 import AdzBook from 'src/app/models/Book.model';
+import { MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-adz-result',
@@ -15,7 +17,8 @@ export class AdzResultComponent implements OnInit {
   constructor(
     private booksService: AdzBooksService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    public dialog: MatDialog) { }
 
   requestString: string = 'lion';
 
@@ -58,8 +61,6 @@ export class AdzResultComponent implements OnInit {
     try {
       search = decodeURI(search);
       this.requestString = search;
-      /* this.booksSubscription.unsubscribe();
-      this.querySubscription.unsubscribe(); */
     } catch (error) {
       console.log(error);
       /**
@@ -78,4 +79,25 @@ export class AdzResultComponent implements OnInit {
     this.querySubscription.unsubscribe();
   }
 
+  openDialog(book: AdzBook) {
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = book;
+    const dialogRef = this.dialog.open(DialogContentComponent, dialogConfig);
+
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+}
+
+@Component({
+  selector: 'dialogContent',
+  templateUrl: 'dialogContent.html',
+})
+export class DialogContentComponent {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
+    console.log(data);
+  }
 }

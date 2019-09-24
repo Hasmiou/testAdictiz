@@ -1,0 +1,87 @@
+<h1 mat-dialog-title>Détails du livre</h1>
+<mat-dialog-content class="mat-typography">
+    <mat-grid-list cols="2" rowHeight="4:3">
+        <mat-grid-tile>
+            <img src="{{data.imageLink}}" style="min-height: 250px; min-width:100px;" alt="">
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <table>
+                <ng-template #elseUnknow>Non défini</ng-template>
+                <tr>
+                    <th>Auteurs:</th>
+                    <td>
+                        <div class="" *ngIf="data.authors else elseUnknow">
+                            <span *ngFor="let a of data.authors;">
+                                {{a}}
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Catégories:</th>
+                    <td>
+                        <div class="" *ngIf="data.categories else elseUnknow">
+                            <span *ngFor="let c of data.categories;">
+                                {{c}}
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Langue:</th>
+                    <td>
+                        <div class="" *ngIf="data.language else elseUnknow">
+                            {{data.language}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Nombres de pages:</th>
+                    <td>
+                        <div class="" *ngIf="data.pageCount else elseUnknow">
+                            {{data.pageCount}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Sortie en:</th>
+                    <td>
+                        <div class="" *ngIf="data.publishedDate else elseUnknow">
+                            {{data.publishedDate|date:'yyyy'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Publié par:</th>
+                    <td>
+                        <div class="" *ngIf="data.publisher else elseUnknow">
+                            {{data.publisher}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Version eBook</th>
+                    <td>
+                        <div class="" *ngIf="data.isEbook else elseUnknow">
+                            {{data.isEbook?'Oui':'Non'}}
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </mat-grid-tile>
+
+    </mat-grid-list>
+    <mat-card>
+        <h2>{{data.title}}</h2>
+        <p><b>Description:</b><br>{{(data.description)?data.description:"Aucune description"}}</p>
+        <a mat-button href="{{data.link}}" target="_Blank">
+            <mat-icon aria-hidden="false" aria-label="backToList">open_in_new</mat-icon> GoogleBook
+        </a>
+    </mat-card>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="warn" mat-dialog-close>
+        Fermer <mat-icon aria-hidden="false" aria-label="backToList">close</mat-icon>
+    </button>
+</mat-dialog-actions>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Input, Inject, Output } from '@angular/core';
 import { AdzBooksService } from 'src/app/services/adz-books.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import AdzQuery from 'src/app/models/Query.model';
@@ -22,7 +22,8 @@ export class AdzResultComponent implements OnInit {
     private _snackBar: MatSnackBar
   ) { }
 
-  requestString: string = 'lion';
+  filteredCount: Number = Number.NaN;
+  requestString: string = null;
 
   books: AdzBook[] = [];
   booksSubscription: Subscription;
@@ -43,9 +44,18 @@ export class AdzResultComponent implements OnInit {
       }
     );
     this.parseUrl();
-    this.booksService.getBooks(this.requestString);
-    this.booksService.emitBooks();
-    if (!this.query || !this.books) this.notify("Erreur de connexion nous ne parvenons pas à traiter votre demande. :(");
+    try {
+      this.booksService.getBooks(this.requestString);
+      this.booksService.emitBooks();
+    } catch (error) {
+      console.log(error);
+      this.notify("Erreur de connexion nous ne parvenons pas à traiter votre demande. :(");
+    }
+  }
+
+  countFiltered(i: Number) {
+    this.filteredCount = i;
+    console.log(i);
   }
 
   onGoBack() {

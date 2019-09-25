@@ -4,11 +4,12 @@
             <mat-icon aria-hidden="false" aria-label="backToList">more</mat-icon> Retour
         </button>
         <div class="item">
-            <input type="text" name="searchfilter" [(ngModel)]="searchfilter" placeholder="Filtrer">
+            <input type="text" name="searchfilter" [(ngModel)]="searchfilter" placeholder="Filtrer"
+                (click)="countFiltered(books.length)">
             <select name="by" [(ngModel)]="by">
                 <option value="title" selected>Par Titre</option>
+                <option value="authors">Par Auteur</option>
                 <!-- <option value="categories" selected>Par Catégorie</option> -->
-                <!--  <option value="authors">Par Auteur</option> -->
                 <option value="publishedYear">Par Année de sortie</option>
                 <option value="publisher">Par Editeur</option>
                 <option value="country">Par Pays</option>
@@ -17,16 +18,22 @@
                 <option value="pagesmorethan">Plus de ... Pages</option>
                 <option value="pricelessthan">Par prix <= ...</option> <option value="pricemorethan">Par prix >= ...
                 </option>
-
             </select>
         </div>
     </div>
-    <p *ngIf="query !null" class="badge-label">Recherche: <b>{{query.request|uppercase}}</b> -
-        {{(query.totalItems)?query.totalItems:"aucun"}}
-        éléments trouvés </p>
-    <div class="" *ngIf="query && query.totalItems else elseContent">
-        <div class="card" *ngFor="let book of books|filter:searchfilter:by; let i = index">
+    <div class="" style="display: flex; justify-content:space-between; margin:5px;">
+        <span *ngIf="query !null" class="badge-label">Recherche: <b>{{query.request|uppercase}}</b> -
+            {{(query.totalItems)?query.totalItems:"aucun"}}
+            éléments trouvés
+        </span>
+        <span class="badge-label" *ngIf="searchfilter !null" style="float: right"><b>Filtre: </b> par
+            "{{searchfilter}}"
+            {{(books|filter:searchfilter:by).length}} trouvé(s)
+        </span>
+    </div>
 
+    <div class="" *ngIf="query && query.totalItems else elseContent">
+        <div class="card" *ngFor="let book of books|filter:searchfilter:by as filtered; let c = count">
             <img src="{{book.imageLink}}" alt="book" (click)="openDialog(book)">
             <div class="card-body">
                 <b>{{(book.title.length>30)?(book.title|slice:0:30)+'...':book.title}}</b><br>
@@ -69,31 +76,11 @@
                 <button mat-raised-button color="primary" (click)="openDialog(book)">
                     <mat-icon aria-hidden="false" aria-label="backToList">description</mat-icon> Voire les détails
                 </button>
-                <!--<div class="popup">
-                        <button type="button" class="btn btn-primary" (click)="openPopup(i)">+Détails</button>
-                        <div class="popup-warp" id="popup{{i}}">
-                            <div class="popup-content">
-                                <p class="description">
-                                    <b>{{book.title}}</b><br>
-                                    <b>Description</b>
-                                    {{(book.description|slice:0:1000)+'...'}}
-                                </p>
-
-                                <div class="popup-footer">
-                                    <a href="{{book.link}}" target="_blank" class="badge-colored">go to Google Book</a>
-                                    <span class="badge">{{book.pageCount}} pages</span>
-                                    <span class="badge">Publié par: {{book.publisher}}</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                    </div>-->
             </div>
         </div>
     </div>
 
     <ng-template #elseContent>
-        <h3 class="mat-display-1">Aucun élément trouvé</h3>
         <bullet-list-content-loader></bullet-list-content-loader>
     </ng-template>
 </div>

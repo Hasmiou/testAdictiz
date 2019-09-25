@@ -3,13 +3,14 @@ import AdzBook from '../models/Book.model';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import AdzQuery from '../models/Query.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdzBooksService {
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private toastr: ToastrService) {
     //this.getBooks();
   }
 
@@ -33,12 +34,8 @@ export class AdzBooksService {
           this.emitBooks();
         },
         (error) => {
-          this.query = null;
-          this.books = null;
+          this.toastr.error('Nous ne parvenons pas à traiter votre requête, vérifier votre connexion internet', 'Erreur connexion');
           this.emitBooks();
-          /**
-           * TODO: Notify badConnexion
-           */
         }
       );
   }

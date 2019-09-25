@@ -22,6 +22,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ContentLoaderModule } from '@ngneat/content-loader';
+import { ToastrModule } from 'ngx-toastr';
 
 const appRoutes: Routes = [
   { path: 'home', component: AdzHomeComponent },
@@ -29,6 +30,12 @@ const appRoutes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: 'home' }
 ];
+
+const toastrConfig = {
+  timeOut: 10000,
+  positionClass: 'toast-bottom-right',
+  preventDuplicates: true,
+};
 
 @NgModule({
   declarations: [
@@ -55,7 +62,8 @@ const appRoutes: Routes = [
     MatDividerModule,
     MatInputModule,
     MatSnackBarModule,
-    ContentLoaderModule
+    ContentLoaderModule,
+    ToastrModule.forRoot(toastrConfig),
   ],
   providers: [
     AdzBooksService,

@@ -76,14 +76,20 @@ export class FilterPipe implements PipeTransform {
     }
 
     if (by === 'authors') {
-      return books.filter(b => {
-        return b.authors && b.authors.map(a => {
-          if (a && a.toLowerCase().includes(term.toLowerCase())) return b;
-        });
-        /*b.authors.map(a => {
-          return (b.authors && a !== null && a.toLowerCase() === term.toLowerCase());
+      /*return books.filter(b => {
+        return b.authors && b.authors.filter(a => {
+          return (a && a.toLowerCase().indexOf(term.toLowerCase()));
         });*/
-      });
+      /*b.authors.map(a => {
+        return (b.authors && a !== null && a.toLowerCase() === term.toLowerCase());
+      });*/
+      //});
+      return books.filter(b => {
+        if (b.authors) {
+          return b.authors.filter(a => a.toLowerCase().indexOf(term.toLowerCase()));
+        }
+      }
+      );
     }
 
     if (by === 'categories') {

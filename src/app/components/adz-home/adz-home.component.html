@@ -1,5 +1,13 @@
 <div class="content t50">
     <div class="search-warper">
+        <div class="">
+            <div class="" style="display: flex; justify-content:flex-end;">
+                <select name="lang" [(ngModel)]="lang" [(value)]="lang" (change)="setLanguage($event.target.value)">
+                    <option value="fr">Français</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+        </div>
         <h1 class="mat-display-1 title">Rechercher un livre</h1>
         <form (keyup.enter)="onSubmit(f)" #f="ngForm">
             <div class="form-content">

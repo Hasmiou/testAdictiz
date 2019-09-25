@@ -4,9 +4,8 @@
             <mat-icon aria-hidden="false" aria-label="backToList">more</mat-icon> Retour
         </button>
         <div class="item">
-            <input type="text" name="searchfilter" [(ngModel)]="searchfilter" placeholder="Filtrer"
-                (click)="countFiltered(books.length)">
-            <select name="by" [(ngModel)]="by">
+            <input type="text" name="searchfilter" [(ngModel)]="searchfilter" placeholder="Filtrer">
+            <select name="by" [(ngModel)]="by" [(value)]="filteredBy">
                 <option value="title" selected>Par Titre</option>
                 <option value="authors">Par Auteur</option>
                 <!-- <option value="categories" selected>Par Catégorie</option> -->

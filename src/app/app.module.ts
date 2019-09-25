@@ -20,6 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSelectModule } from '@angular/material/select';
 
 import { ContentLoaderModule } from '@ngneat/content-loader';
 import { ToastrModule } from 'ngx-toastr';
@@ -62,6 +63,7 @@ const toastrConfig = {
     MatDividerModule,
     MatInputModule,
     MatSnackBarModule,
+    MatSelectModule,
     ContentLoaderModule,
     ToastrModule.forRoot(toastrConfig),
   ],

@@ -11,38 +11,38 @@ import { ToastrService } from 'ngx-toastr';
 export class AdzBooksService {
 
   constructor(private httpClient: HttpClient, private toastr: ToastrService) {
-    //this.getBooks();
   }
 
   books: AdzBook[] = [];
-  query: AdzQuery = new AdzQuery('', 0);
+  query: AdzQuery = new AdzQuery();
 
   booksSubject = new Subject<AdzBook[]>();
-  querySubject = new Subject<AdzQuery>();
 
   emitBooks() {
     this.booksSubject.next(this.books);
-    this.querySubject.next(this.query);
   }
 
   getBooks(request: string) {
     this.httpClient
-      .get<any>("https://www.googleapis.com/books/v1/volumes?q=" + request)
+      .get<any>(`https://www.googleapis.com/books/v1/volumes?q=${request}&langRestrict=${this.query.lang}&maxResults=40`)
       .subscribe(
         (response) => {
           this.responseParser(response, request);
+          this.queryParser(response, request);
           this.emitBooks();
         },
         (error) => {
           this.toastr.error('Nous ne parvenons pas à traiter votre requête, vérifier votre connexion internet', 'Erreur connexion');
-          this.emitBooks();
         }
       );
   }
 
-  responseParser(response: any, req: string) {
+  queryParser(response: any, req: string) {
     this.query.request = req;
     this.query.totalItems = response.items.length;
+  }
+
+  responseParser(response: any, req: string) {
     const items: any[] = response.items;
     items.map(
       i => {
@@ -54,7 +54,7 @@ export class AdzBooksService {
         book.description = i.volumeInfo.description;
         book.pageCount = i.volumeInfo.pageCount;
         book.categories = i.volumeInfo.categories;
-        book.imageLink = (i.volumeInfo.imageLinks.thumbnail) ? i.volumeInfo.imageLinks.thumbnail : '/assets/book.pngy';
+        book.imageLink = (i.volumeInfo.imageLinks) ? i.volumeInfo.imageLinks.thumbnail : '/assets/book.png';
         book.language = i.volumeInfo.language;
         book.link = i.volumeInfo.canonicalVolumeLink;
         book.country = i.saleInfo.country;

@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, Inject, Output } from '@angular/core';
 import { AdzBooksService } from 'src/app/services/adz-books.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import AdzQuery from 'src/app/models/Query.model';
 import { Subscription } from 'rxjs';
 import AdzBook from 'src/app/models/Book.model';
 import { MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material';
+import { ToastrService } from 'ngx-toastr';
+import AdzQuery from 'src/app/models/Query.model';
 
 
 @Component({
@@ -19,17 +20,17 @@ export class AdzResultComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     public _dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private toastr: ToastrService
   ) { }
 
-  filteredCount: Number = Number.NaN;
   requestString: string = null;
+  filteredBy = "title";
 
   books: AdzBook[] = [];
   booksSubscription: Subscription;
 
-  query: AdzQuery = null;
-  querySubscription: Subscription;
+  query: AdzQuery = this.booksService.query;
 
   ngOnInit() {
     this.booksSubscription = this.booksService.booksSubject.subscribe(
@@ -38,24 +39,14 @@ export class AdzResultComponent implements OnInit {
       }
     );
 
-    this.querySubscription = this.booksService.querySubject.subscribe(
-      (v: AdzQuery) => {
-        this.query = v;
-      }
-    );
     this.parseUrl();
     try {
       this.booksService.getBooks(this.requestString);
       this.booksService.emitBooks();
     } catch (error) {
       console.log(error);
-      this.notify("Erreur de connexion nous ne parvenons pas à traiter votre demande. :(");
+      this.toastr.error("Nous sommes désolé, une erreur interne s'est produite!", 'Erreur');
     }
-  }
-
-  countFiltered(i: Number) {
-    this.filteredCount = i;
-    console.log(i);
   }
 
   onGoBack() {
@@ -65,6 +56,7 @@ export class AdzResultComponent implements OnInit {
   parseUrl() {
     let search = this.activatedRoute.snapshot.params['s'];
     if (search === "") {
+      this.toastr.error('Veuiller saisir un nom de livre puis appuyez sur ENTRER pour rechercher', 'Erreur');
       this.router.navigate(['/home'])
     }
 
@@ -76,27 +68,17 @@ export class AdzResultComponent implements OnInit {
     }
   }
 
-  openPopup(id: number) {
-    let popup = document.getElementById("popup" + id);
-    popup.classList.toggle("show");
+  openDialog(book: AdzBook) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = book;
+    const dialogRef = this._dialog.open(DialogContentComponent, dialogConfig);
   }
 
   ngOnDestroy(): void {
     this.booksSubscription.unsubscribe();
-    this.querySubscription.unsubscribe();
   }
 
-  openDialog(book: AdzBook) {
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = book;
-    const dialogRef = this._dialog.open(DialogContentComponent, dialogConfig);
-
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
 
   notify(message: string) {
     this._snackBar.open(message, 'X', {
@@ -111,6 +93,5 @@ export class AdzResultComponent implements OnInit {
 })
 export class DialogContentComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-    //console.log(data);
   }
 }

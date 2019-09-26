@@ -25,6 +25,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ContentLoaderModule } from '@ngneat/content-loader';
 import { ToastrModule } from 'ngx-toastr';
 
+
 const appRoutes: Routes = [
   { path: 'home', component: AdzHomeComponent },
   { path: 'result/:s', component: AdzResultComponent },

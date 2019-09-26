@@ -32,6 +32,8 @@ export class AdzResultComponent implements OnInit {
 
   query: AdzQuery = this.booksService.query;
 
+  isFinish = false;
+
   ngOnInit() {
     this.booksSubscription = this.booksService.booksSubject.subscribe(
       (b: AdzBook[]) => {
@@ -44,7 +46,6 @@ export class AdzResultComponent implements OnInit {
       this.booksService.getBooks(this.requestString);
       this.booksService.emitBooks();
     } catch (error) {
-      console.log(error);
       this.toastr.error("Nous sommes désolé, une erreur interne s'est produite!", 'Erreur');
     }
   }
@@ -74,16 +75,14 @@ export class AdzResultComponent implements OnInit {
     const dialogRef = this._dialog.open(DialogContentComponent, dialogConfig);
   }
 
-  ngOnDestroy(): void {
-    this.booksSubscription.unsubscribe();
-  }
-
-
-
   notify(message: string) {
     this._snackBar.open(message, 'X', {
       duration: 5000
     });
+  }
+
+  ngOnDestroy(): void {
+    this.booksSubscription.unsubscribe();
   }
 }
 

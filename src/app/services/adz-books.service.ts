@@ -16,6 +16,10 @@ export class AdzBooksService {
   books: AdzBook[] = [];
   query: AdzQuery = new AdzQuery();
 
+  getQueryObject() {
+    return this.query;
+  }
+
   booksSubject = new Subject<AdzBook[]>();
 
   emitBooks() {
@@ -24,10 +28,10 @@ export class AdzBooksService {
 
   getBooks(request: string) {
     this.httpClient
-      .get<any>(`https://www.googleapis.com/books/v1/volumes?q=${request}&langRestrict=${this.query.lang}&maxResults=40`)
+      .get<any>(`https://www.googleapis.com/books/v1/volumes?q=${request}&langRestrict=${this.query.lang}&maxResults=${this.query.maxResults}`)
       .subscribe(
         (response) => {
-          this.responseParser(response, request);
+          this.responseParser(response);
           this.queryParser(response, request);
           this.emitBooks();
         },
@@ -42,7 +46,7 @@ export class AdzBooksService {
     this.query.totalItems = response.items.length;
   }
 
-  responseParser(response: any, req: string) {
+  responseParser(response: any) {
     const items: any[] = response.items;
     items.map(
       i => {

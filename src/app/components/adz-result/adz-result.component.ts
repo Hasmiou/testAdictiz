@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject, Output } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { AdzBooksService } from 'src/app/services/adz-books.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -35,6 +35,7 @@ export class AdzResultComponent implements OnInit {
   isFinish = false;
 
   ngOnInit() {
+    this.booksService.notifyUseCookie();
     this.booksSubscription = this.booksService.booksSubject.subscribe(
       (b: AdzBook[]) => {
         this.books = b;

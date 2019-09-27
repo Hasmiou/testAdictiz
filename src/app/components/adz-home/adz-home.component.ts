@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { MatSnackBar } from '@angular/material';
 import { AdzBooksService } from 'src/app/services/adz-books.service';
 import AdzQuery from 'src/app/models/Query.model';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-adz-home',
@@ -13,19 +13,27 @@ import AdzQuery from 'src/app/models/Query.model';
 })
 export class AdzHomeComponent implements OnInit {
 
-  constructor(private router: Router, private toastr: ToastrService, private _snackBar: MatSnackBar, private booksService: AdzBooksService) { }
-  lang: string = localStorage.getItem('lang') ? localStorage.getItem('lang') : 'fr';
+  constructor(
+    private router: Router,
+    private toastr: ToastrService,
+    private booksService: AdzBooksService,
+    private cookieService: CookieService) { }
+
+  lang: string;
 
   query: AdzQuery = this.booksService.query;
 
   ngOnInit() {
-    this._snackBar.open("Bienvenu à vous, veuillez saisir un nom de livre puis appuyez sur ENTRER pour rechercher", 'X', {
-      duration: 5000
-    });
+    this.lang = this.cookieService.get('lang') ? this.cookieService.get('lang') : 'fr';
+    this.query.lang = this.lang;
+    this.booksService.notifyUseCookie();
+
   }
 
   setLanguage(l: string) {
-    localStorage.setItem('lang', l);
+    console.log('variable: ' + this.lang);
+    console.log('Cookies: ' + this.cookieService.get('lang'));
+    this.cookieService.set('lang', 'fr');
     this.booksService.query.lang = l;
   }
 

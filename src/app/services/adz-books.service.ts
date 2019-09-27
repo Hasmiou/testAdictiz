@@ -4,21 +4,21 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import AdzQuery from '../models/Query.model';
 import { ToastrService } from 'ngx-toastr';
+import { CookieService } from 'ngx-cookie-service';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdzBooksService {
 
-  constructor(private httpClient: HttpClient, private toastr: ToastrService) {
+  constructor(private httpClient: HttpClient, private toastr: ToastrService, private cookieService: CookieService,
+    private _snackBar: MatSnackBar) {
   }
 
   books: AdzBook[] = [];
   query: AdzQuery = new AdzQuery();
 
-  getQueryObject() {
-    return this.query;
-  }
 
   booksSubject = new Subject<AdzBook[]>();
 
@@ -71,4 +71,15 @@ export class AdzBooksService {
     );
   }
 
+  notifyUseCookie() {
+    let agree: string = this.cookieService.check('agree') ? this.cookieService.get('agree') : 'false';
+    if (agree !== new Boolean(true).toString()) {
+      let snackBarRef = this._snackBar.open("Bienvenu à vous, Nous utilisons des cookies pour nous assurer du bon fonctionnement de notre site. Plus précisement la langue souhaité pour vos recherches de livres", 'OK', {
+      });
+
+      snackBarRef.onAction().subscribe(() => {
+        this.cookieService.set('agree', new Boolean(true).toString())
+      });
+    }
+  }
 }

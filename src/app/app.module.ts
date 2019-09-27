@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -70,6 +71,7 @@ const toastrConfig = {
   ],
   providers: [
     AdzBooksService,
+    CookieService
   ],
   bootstrap: [AppComponent],
   entryComponents: [DialogContentComponent],
